@@ -1,0 +1,26 @@
+{
+  "name": "meshsrv-core",
+  "private": true,
+  "type": "module",
+  "module": "src/index.ts",
+  "scripts": {
+    "dev": "bun drizzle:generate && bun run --watch src/index.ts",
+    "start": "bun run src/index.ts",
+    "format": "prettier --write ./src",
+    "drizzle:generate": "drizzle-kit generate"
+  },
+  "dependencies": {
+    "@oslojs/encoding": "^1.1.0",
+    "drizzle-orm": "^0.41.0",
+    "elysia": "^1.2.25"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.2.6",
+    "drizzle-kit": "^0.30.5",
+    "prettier": "^3.5.3",
+    "prettier-plugin-organize-imports": "^4.1.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.8.2"
+  }
+}
