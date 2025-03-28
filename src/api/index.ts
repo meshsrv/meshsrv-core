@@ -6,7 +6,7 @@ import { Elysia, t } from 'elysia';
 import { auth } from './plugin/auth';
 import { response } from './plugin/response';
 
-export const app = new Elysia()
+export const apiServer = new Elysia()
   .use(auth)
   .use(response)
   .get('/', ({ user }) => user, { isAuth: true })
