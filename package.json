@@ -12,6 +12,7 @@
   "dependencies": {
     "@elysiajs/swagger": "^1.2.2",
     "@oslojs/encoding": "^1.1.0",
+    "@sinclair/typebox": "0.34.27",
     "drizzle-orm": "^0.41.0",
     "elysia": "^1.2.25"
   },
