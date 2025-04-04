@@ -2,13 +2,23 @@ import { db } from '@/db';
 import { verifyPasswordHash } from '@/service/password';
 import { createSession, generateSessionToken } from '@/service/session';
 import { createUser, getUserFromUsername, getUserPasswordHash } from '@/service/user';
+import { respt } from '@/util/type';
 import swagger from '@elysiajs/swagger';
 import { Elysia, t } from 'elysia';
 import { auth } from './plugin/auth';
 import { response } from './plugin/response';
 
 export const apiServer = new Elysia()
-  .use(swagger())
+  .use(
+    swagger({
+      documentation: {
+        info: {
+          title: 'Meshsrv API Documentation',
+          version: '1.0.0',
+        },
+      },
+    })
+  )
   .use(auth)
   .use(response)
   .get('/', ({ user }) => user, { isAuth: true })
@@ -21,6 +31,10 @@ export const apiServer = new Elysia()
     },
     {
       response: t.Boolean(),
+      detail: {
+        description:
+          'Check if the core server is uninitialized. Return true if there is no user in the database.',
+      },
     }
   )
   .post(
@@ -42,6 +56,11 @@ export const apiServer = new Elysia()
         username: t.String(),
         password: t.String(),
       }),
+      response: respt(
+        t.Object({
+          token: t.String(),
+        })
+      ),
     }
   )
   .post(
@@ -61,5 +80,13 @@ export const apiServer = new Elysia()
         username: t.String(),
         password: t.String(),
       }),
+      response: respt(
+        t.Object({
+          token: t.String(),
+        })
+      ),
+      detail: {
+        description: 'NOTE: Currently only allow one user to sign up.',
+      },
     }
   );
