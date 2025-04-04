@@ -2,11 +2,13 @@ import { db } from '@/db';
 import { verifyPasswordHash } from '@/service/password';
 import { createSession, generateSessionToken } from '@/service/session';
 import { createUser, getUserFromUsername, getUserPasswordHash } from '@/service/user';
+import swagger from '@elysiajs/swagger';
 import { Elysia, t } from 'elysia';
 import { auth } from './plugin/auth';
 import { response } from './plugin/response';
 
 export const apiServer = new Elysia()
+  .use(swagger())
   .use(auth)
   .use(response)
   .get('/', ({ user }) => user, { isAuth: true })
