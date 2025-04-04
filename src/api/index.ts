@@ -10,6 +10,17 @@ export const apiServer = new Elysia()
   .use(auth)
   .use(response)
   .get('/', ({ user }) => user, { isAuth: true })
+  .get(
+    '/is-uninitialized',
+    async () => {
+      const row = await db.query.userTable.findFirst();
+      if (row) return false;
+      return true;
+    },
+    {
+      response: t.Boolean(),
+    }
+  )
   .post(
     '/sign-in',
     async ({ body: { username, password }, suc, err }) => {
