@@ -32,6 +32,7 @@ export const apiServer = new Elysia()
     {
       response: t.Boolean(),
       detail: {
+        tags: ['auth'],
         description:
           'Check if the core server is uninitialized. Return true if there is no user in the database.',
       },
@@ -61,6 +62,9 @@ export const apiServer = new Elysia()
           token: t.String(),
         })
       ),
+      detail: {
+        tags: ['auth'],
+      },
     }
   )
   .post(
@@ -86,6 +90,7 @@ export const apiServer = new Elysia()
         })
       ),
       detail: {
+        tags: ['auth'],
         description: 'NOTE: Currently only allow one user to sign up.',
       },
     }
