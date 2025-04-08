@@ -94,4 +94,17 @@ export const apiServer = new Elysia()
         description: 'NOTE: Currently only allow one user to sign up.',
       },
     }
-  );
+  )
+  .get('/user-info', ({ user, suc }) => suc(user), {
+    isAuth: true,
+    response: respt(
+      t.Object({
+        id: t.Number(),
+        username: t.String(),
+        nickname: t.Nullable(t.String()),
+      })
+    ),
+    detail: {
+      tags: ['auth'],
+    },
+  });
