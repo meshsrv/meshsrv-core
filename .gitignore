@@ -1,6 +1,8 @@
 # database
 *.db
 *.sqlite
+*-shm
+*-wal
 
 # dependencies (bun install)
 node_modules
