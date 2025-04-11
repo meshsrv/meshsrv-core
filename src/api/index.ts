@@ -4,23 +4,22 @@ import { Elysia } from 'elysia';
 import { authRoute } from './route/auth';
 import { userRoute } from './route/user';
 
-export const apiServer = new Elysia({
-  serve: {
-    tls: {
-      cert: file('cert.pem'),
-      key: file('key.pem'),
-    },
-  },
-})
-  .use(
-    swagger({
-      documentation: {
-        info: {
-          title: 'Meshsrv API Documentation',
-          version: '1.0.0',
+export function runApiServer(cert: string, key: string) {
+  const apiServer = new Elysia({
+    serve: { tls: { cert: file(cert), key: file(key) } },
+  })
+    .use(
+      swagger({
+        documentation: {
+          info: {
+            title: 'Meshsrv API Documentation',
+            version: '1.0.0',
+          },
         },
-      },
-    })
-  )
-  .use(authRoute)
-  .use(userRoute);
+      })
+    )
+    .use(authRoute)
+    .use(userRoute);
+
+  return apiServer.listen(Bun.env.API_SERVER_PORT || 3090);
+}

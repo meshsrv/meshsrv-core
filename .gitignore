@@ -1,5 +1,7 @@
 # certificates
+cert
 *.pem
+*.srl
 
 # database
 *.db

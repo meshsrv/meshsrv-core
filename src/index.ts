@@ -1,22 +1,35 @@
 import { migrate } from 'drizzle-orm/bun-sqlite/migrator';
-import { apiServer } from './api';
+import { runApiServer } from './api';
 import { db } from './db';
 import { generateTLSCert } from './util/tls';
 
-// migrate the database
-migrate(db, { migrationsFolder: './drizzle' });
+if (import.meta.main) {
+  // migrate the database
+  migrate(db, { migrationsFolder: './drizzle' });
 
-// generate tls certificate
-if (!(await Bun.file('cert.pem').exists())) {
-  console.log('⚠️ No certificate found, generating self-signed certificate...');
-  console.log('Put your own certificate in cert.pem and key.pem to avoid self-signed warnings.');
-  const res = await generateTLSCert();
-  if (!res) {
-    console.error('Failed to generate certificate');
-    process.exit(1);
-  }
+  const { cert, key } = await checkCert();
+  const { server } = runApiServer(cert, key);
+  console.log(`✅ Server is running at ${server?.hostname}:${server?.port}`);
 }
 
-// start api server
-apiServer.listen(Bun.env.API_SERVER_PORT);
-console.log(`✅ Server is running at ${apiServer.server?.hostname}:${apiServer.server?.port}`);
+async function checkCert() {
+  const caCert = Bun.env.CA_CERT_FILE || 'cert/ca.cert.pem';
+  const caKey = Bun.env.CA_KEY_FILE || 'cert/ca.key.pem';
+  const cert = Bun.env.CERT_FILE || 'cert/cert.pem';
+  const key = Bun.env.KEY_FILE || 'cert/key.pem';
+
+  const isCACertExists = await Bun.file(caCert).exists();
+  const isCertExists = await Bun.file(cert).exists();
+  const isKeyExists = await Bun.file(key).exists();
+
+  if (!isCACertExists || !isCertExists || !isKeyExists) {
+    console.log('⚠️ Certificate not found, generating self-signed certificate...');
+    const success = await generateTLSCert(caCert, caKey, cert, key);
+    if (!success) {
+      console.error('Failed to generate certificate');
+      process.exit(1);
+    }
+  }
+
+  return { cert, key };
+}
