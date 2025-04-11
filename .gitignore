@@ -1,3 +1,6 @@
+# certificates
+*.pem
+
 # database
 *.db
 *.sqlite
