@@ -28,8 +28,9 @@ export const serverTable = sqliteTable('server', {
     .default(sql`(CURRENT_TIMESTAMP)`),
 });
 export type Server = InferSelectModel<typeof serverTable>;
+export type NewServer = typeof serverTable.$inferInsert;
 
-interface NotificationData {
+export interface NotificationData {
   type: 'message';
   title: string;
   description?: string;
@@ -44,3 +45,4 @@ export const notificationTable = sqliteTable('notification', {
     .default(sql`(CURRENT_TIMESTAMP)`),
 });
 export type Notification = InferSelectModel<typeof notificationTable>;
+export type NewNotification = typeof notificationTable.$inferInsert;
