@@ -3,12 +3,8 @@ import { db } from '@/db';
 import { notificationTable, type NewNotification } from '@/db/schema';
 
 export async function notify(v: NewNotification) {
-  getCurrentServer()?.publish(
-    'notification',
-    JSON.stringify({
-      level: v.level,
-      data: v.data,
-    })
-  );
+  const msg = JSON.stringify({ level: v.level, data: v.data });
+  console.log(`Push notification: ${msg}`);
+  getCurrentServer()?.publish('notification', msg);
   await db.insert(notificationTable).values(v);
 }
