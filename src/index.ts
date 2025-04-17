@@ -1,13 +1,20 @@
 import { migrate } from 'drizzle-orm/bun-sqlite/migrator';
 import { runApiServer } from './api';
 import { db } from './db';
+import { getAgentSecret } from './util/agent';
 import { generateTLSCert } from './util/tls';
 
 if (import.meta.main) {
   // migrate the database
   migrate(db, { migrationsFolder: './drizzle' });
 
+  // create tls cert if not exists
   const { cert, key } = await checkCert();
+
+  // make sure agent secret exists
+  getAgentSecret();
+
+  // start api server
   const { server } = runApiServer(cert, key);
   console.log(`✅ Server is running at ${server?.hostname}:${server?.port}`);
 }

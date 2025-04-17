@@ -2,6 +2,7 @@
 cert
 *.pem
 *.srl
+*.secret
 
 # database
 *.db
