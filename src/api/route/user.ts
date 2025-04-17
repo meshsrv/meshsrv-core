@@ -6,7 +6,7 @@ import { auth } from '../plugin/auth';
 import { response } from '../plugin/response';
 
 const userSelectSchema = createSelectSchema(userTable, {
-  passwordHash: t.Optional(t.Undefined()),
+  passwordHash: t.Optional(t.Null()),
 });
 
 export const userRoute = new Elysia()
