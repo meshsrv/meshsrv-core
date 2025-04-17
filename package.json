@@ -14,6 +14,7 @@
     "@oslojs/encoding": "^1.1.0",
     "@sinclair/typebox": "0.34.27",
     "drizzle-orm": "^0.41.0",
+    "drizzle-typebox": "^0.3.2",
     "elysia": "^1.2.25"
   },
   "devDependencies": {
