@@ -26,6 +26,7 @@ export const serverTable = sqliteTable('server', {
   latestPing: int({ mode: 'timestamp' })
     .notNull()
     .default(sql`(CURRENT_TIMESTAMP)`),
+  latestReportOffline: int({ mode: 'timestamp' }),
 });
 export type Server = InferSelectModel<typeof serverTable>;
 export type NewServer = typeof serverTable.$inferInsert;
