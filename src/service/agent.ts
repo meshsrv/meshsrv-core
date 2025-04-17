@@ -33,7 +33,7 @@ export async function handleAgentMsg(msg: AgentMsg, ip: string): Promise<Object 
       data: {
         type: 'message',
         // TODO: i18n
-        title: `${spec.osInfo.hostname} (${ip}) 已上线`,
+        title: `${spec.osInfo.hostname}${ip ? ` (${ip})` : ''} 已上线`,
       },
     });
     return;
