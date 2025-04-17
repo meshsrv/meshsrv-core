@@ -11,7 +11,7 @@ export const authRoute = new Elysia()
   .use(auth)
   .use(response)
   .get(
-    '/is-uninitialized',
+    '/auth/is-uninitialized',
     async () => {
       const row = await db.query.userTable.findFirst();
       if (row) return false;
@@ -27,7 +27,7 @@ export const authRoute = new Elysia()
     }
   )
   .post(
-    '/sign-in',
+    '/auth/sign-in',
     async ({ body: { username, password }, suc, err }) => {
       const user = await getUserFromUsername(username);
       if (!user) return err(400, 'Invalid username or password');
@@ -56,7 +56,7 @@ export const authRoute = new Elysia()
     }
   )
   .post(
-    '/sign-up',
+    '/auth/sign-up',
     async ({ body: { username, password }, suc, err }) => {
       // TODO: currently only allow one user
       const row = await db.query.userTable.findFirst();
