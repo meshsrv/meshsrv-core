@@ -10,7 +10,9 @@ export const agentRoute = new Elysia()
     isAgent: true,
     body: agentMsgSchema,
     async message(ws, message) {
-      const result = await handleAgentMsg(message, ws.remoteAddress);
-      if (result) ws.send(JSON.stringify(result));
+      message.forEach(async (msg) => {
+        const result = await handleAgentMsg(msg, ws.remoteAddress);
+        if (result) ws.send(JSON.stringify(result));
+      });
     },
   });

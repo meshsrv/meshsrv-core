@@ -6,13 +6,15 @@ import { eq } from 'drizzle-orm';
 import { t, type Static } from 'elysia';
 
 // TODO: Define more specific type for agent messages
-export const agentMsgSchema = t.Object({
+export const agentMsgItemSchema = t.Object({
   type: t.String(),
   data: t.Any(),
 });
+export const agentMsgSchema = t.Array(agentMsgItemSchema);
+export type AgentMsgItem = Static<typeof agentMsgItemSchema>;
 export type AgentMsg = Static<typeof agentMsgSchema>;
 
-export async function handleAgentMsg(msg: AgentMsg, ip: string): Promise<Object | undefined> {
+export async function handleAgentMsg(msg: AgentMsgItem, ip: string): Promise<Object | undefined> {
   if (msg.type === 'online') {
     const spec = msg.data as BasicData;
 
