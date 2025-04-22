@@ -25,7 +25,7 @@ export const serverTable = sqliteTable('server', {
   spec: text({ mode: 'json' }).$type<BasicData>().notNull(),
   latestPing: int({ mode: 'timestamp' })
     .notNull()
-    .default(sql`(CURRENT_TIMESTAMP)`),
+    .default(sql`(unixepoch())`),
   latestReportOffline: int({ mode: 'timestamp' }),
 });
 export type Server = InferSelectModel<typeof serverTable>;
@@ -43,7 +43,7 @@ export const notificationTable = sqliteTable('notification', {
   read: int({ mode: 'boolean' }).notNull().default(false),
   createdAt: int({ mode: 'timestamp' })
     .notNull()
-    .default(sql`(CURRENT_TIMESTAMP)`),
+    .default(sql`(unixepoch())`),
 });
 export type Notification = InferSelectModel<typeof notificationTable>;
 export type NewNotification = typeof notificationTable.$inferInsert;
