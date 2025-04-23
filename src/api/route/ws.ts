@@ -1,4 +1,5 @@
 import { agentMsgItemSchema, handleAgentMsg } from '@/service/agent';
+import { dashboardTopic } from '@/util/ws';
 import { Elysia, t } from 'elysia';
 import { auth } from '../plugin/auth';
 import { response } from '../plugin/response';
@@ -39,12 +40,12 @@ export const wsRoute = new Elysia()
     body: dashboardMsgSchema,
     message(ws, message) {
       if (message.type === 'subscribe') {
-        if (!ws.isSubscribed(message.payload)) ws.subscribe(message.payload);
+        if (!ws.isSubscribed(message.payload)) ws.subscribe(dashboardTopic(message.payload));
         return;
       }
 
       if (message.type === 'unsubscribe') {
-        if (ws.isSubscribed(message.payload)) ws.unsubscribe(message.payload);
+        if (ws.isSubscribed(message.payload)) ws.unsubscribe(dashboardTopic(message.payload));
         return;
       }
 
