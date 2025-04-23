@@ -12,19 +12,6 @@ const notificationSelectSchema = createSelectSchema(notificationTable);
 export const notificationRoute = new Elysia()
   .use(auth)
   .use(response)
-  .ws('/ws/notification', {
-    isAuth: true,
-    open(ws) {
-      if (!ws.isSubscribed('notification')) {
-        ws.subscribe('notification');
-      }
-    },
-    close(ws) {
-      if (ws.isSubscribed('notification')) {
-        ws.unsubscribe('notification');
-      }
-    },
-  })
   .get(
     '/notification/list',
     async ({ suc }) => {
