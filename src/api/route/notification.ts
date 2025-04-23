@@ -34,8 +34,7 @@ export const notificationRoute = new Elysia()
         .update(notificationTable)
         .set({ read: true })
         .where(inArray(notificationTable.id, body))
-        .then(() => true)
-        .catch(() => false); // TODO: log error
+        .then(() => true);
       return suc(result);
     },
     {
