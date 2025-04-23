@@ -1,10 +1,10 @@
-import { getCurrentServer } from '@/api';
 import { db } from '@/db';
 import { notificationTable, type NewNotification } from '@/db/schema';
+import { publish } from './ws';
 
 export async function notify(v: NewNotification) {
-  const msg = JSON.stringify({ level: v.level, data: v.data });
-  console.log(`[Push Notification] ${msg}`);
-  getCurrentServer()?.publish('notification', msg);
+  const msg = { level: v.level, data: v.data };
+  console.log(`[Push Notification] ${JSON.stringify(msg)}`);
+  publish('notification', msg);
   await db.insert(notificationTable).values(v);
 }
