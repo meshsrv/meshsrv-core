@@ -8,13 +8,13 @@ import { t, type Static } from 'elysia';
 // TODO: Define more specific type for agent messages
 export const agentMsgItemSchema = t.Object({
   type: t.String(),
-  data: t.Any(),
+  payload: t.Any(),
 });
 export type AgentMsgItem = Static<typeof agentMsgItemSchema>;
 
 export async function handleAgentMsg(msg: AgentMsgItem, ip: string): Promise<Object | undefined> {
   if (msg.type === 'online') {
-    const spec = msg.data as BasicData;
+    const spec = msg.payload as BasicData;
 
     const server = await db.query.serverTable.findFirst({
       where: (server, { eq }) => eq(server.id, spec.uuid),
@@ -32,7 +32,7 @@ export async function handleAgentMsg(msg: AgentMsgItem, ip: string): Promise<Obj
       level: 'success',
       data: {
         type: 'message',
-        // TODO: i18n
+        // TODO: i18n, should be placed in frontend?
         title: `${spec.osInfo.hostname}${ip ? ` (${ip})` : ''} 已上线`,
       },
     });
@@ -40,7 +40,7 @@ export async function handleAgentMsg(msg: AgentMsgItem, ip: string): Promise<Obj
   }
 
   if (msg.type === 'offline') {
-    const v = msg.data as { uuid: string };
+    const v = msg.payload as { uuid: string };
     await db
       .update(serverTable)
       .set({ latestReportOffline: new Date() })
