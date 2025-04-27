@@ -26,7 +26,7 @@ export function runApiServer(cert: string, key: string) {
       })
     )
     .use(route)
-    .listen(Bun.env.API_SERVER_PORT || 3090);
+    .listen(parseInt(Bun.env.API_SERVER_PORT ?? '3090'));
 
   CURRENT_SERVER = apiServer.server;
   return apiServer;

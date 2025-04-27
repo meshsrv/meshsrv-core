@@ -61,6 +61,8 @@ export async function generateTLSCert(
     return false;
   }
 
+  const envIP = Bun.env.AGENT_CONNECT_IP;
+  const envAddr = Bun.env.AGENT_CONNECT_ADDR;
   const ips = new Set(
     Object.values(networkInterfaces())
       .flat()
@@ -68,10 +70,11 @@ export async function generateTLSCert(
       .filter((v) => v)
   );
   ips.add('127.0.0.1');
+  if (envIP) ips.add(envIP);
   const ipsStr = Array.from(ips).join(', IP:');
 
   try {
-    const ext = `subjectAltName = DNS:localhost, DNS:*, IP:${ipsStr}`;
+    const ext = `subjectAltName = DNS:localhost${envAddr ? `, DNS:${envAddr}` : ''}, IP:${ipsStr}`;
     const cnf = await $`echo "$(dirname "${cert}")/san.cnf"`.text();
 
     await $`echo "${ext}" > "${cnf}" && \
